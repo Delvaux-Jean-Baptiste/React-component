@@ -1,0 +1,92 @@
+.dt-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  }
+  
+  .dt-table {
+    min-width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    font-family: inherit;
+  }
+  
+  .dt-thead-row {
+    background-color: #f8fafc;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  
+  .dt-th {
+    text-align: left;
+    font-weight: 600;
+    color: #334155;
+    padding: 12px 16px;
+    white-space: nowrap;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+  
+  .dt-th--sortable {
+    cursor: pointer;
+  }
+  
+  .dt-th--sortable:hover {
+    background-color: #f1f5f9;
+  }
+  
+  .dt-th-content {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  
+  .dt-sort-icon {
+    display: inline-block;
+    width: 14px;
+    text-align: center;
+    line-height: 1;
+    font-size: 10px;
+    color: #cbd5e1;
+  }
+  
+  .dt-sort-icon--active {
+    color: #334155;
+  }
+  
+  .dt-row {
+    border-bottom: 1px solid #f1f5f9;
+    background-color: #ffffff;
+    transition: background-color 0.15s ease;
+  }
+  
+  .dt-row:last-child {
+    border-bottom: none;
+  }
+  
+  .dt-row--striped {
+    background-color: #f8fafc;
+  }
+  
+  .dt-row:hover {
+    background-color: #eff6ff;
+  }
+  
+  .dt-cell {
+    padding: 10px 16px;
+    color: #334155;
+    white-space: nowrap;
+  }
+  
+  .dt-empty-state,
+  .dt-empty-cell {
+    text-align: center;
+    color: #94a3b8;
+    padding: 32px 16px;
+  }
+  
+  .dt-empty-state {
+    border: 1px dashed #cbd5e1;
+    border-radius: 12px;
+  }

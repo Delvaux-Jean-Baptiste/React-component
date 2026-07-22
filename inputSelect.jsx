@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect, useId, forwardRef } from "react";
- 
+import "./inputSelect.css";
+
 /**
  * Select
  *
@@ -39,29 +40,29 @@ const Select = forwardRef(function Select(
   const normalized = options.map((opt) =>
     typeof opt === "string" ? { label: opt, value: opt } : opt
   );
- 
+
   const isControlled = value !== undefined;
   const [internalValue, setInternalValue] = useState(defaultValue);
   const currentValue = isControlled ? value : internalValue;
- 
+
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [activeIndex, setActiveIndex] = useState(-1);
- 
+
   const containerRef = useRef(null);
   const searchInputRef = useRef(null);
   const generatedId = useId();
   const fieldId = id || generatedId;
   const errorId = `${fieldId}-error`;
- 
+
   const filtered = searchable
     ? normalized.filter((opt) =>
         opt.label.toLowerCase().includes(query.trim().toLowerCase())
       )
     : normalized;
- 
+
   const selectedOption = normalized.find((opt) => opt.value === currentValue) || null;
- 
+
   useEffect(() => {
     function handleClickOutside(e) {
       if (containerRef.current && !containerRef.current.contains(e.target)) {
@@ -72,7 +73,7 @@ const Select = forwardRef(function Select(
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
- 
+
   useEffect(() => {
     if (open && searchable) {
       // focus after the dropdown mounts
@@ -80,29 +81,29 @@ const Select = forwardRef(function Select(
       setActiveIndex(-1);
     }
   }, [open, searchable]);
- 
+
   const commitValue = (newValue) => {
     if (!isControlled) setInternalValue(newValue);
     onChange?.(newValue);
   };
- 
+
   const handleSelect = (opt) => {
     commitValue(opt.value);
     setOpen(false);
     setQuery("");
   };
- 
+
   const handleClear = (e) => {
     e.stopPropagation();
     commitValue(null);
     setQuery("");
   };
- 
+
   const toggleOpen = () => {
     if (disabled) return;
     setOpen((o) => !o);
   };
- 
+
   const handleKeyDown = (e) => {
     if (disabled) return;
     if (!open && (e.key === "Enter" || e.key === " " || e.key === "ArrowDown")) {
@@ -111,7 +112,7 @@ const Select = forwardRef(function Select(
       return;
     }
     if (!open) return;
- 
+
     if (e.key === "ArrowDown") {
       e.preventDefault();
       setActiveIndex((i) => Math.min(i + 1, filtered.length - 1));
@@ -129,23 +130,20 @@ const Select = forwardRef(function Select(
       setQuery("");
     }
   };
- 
+
   return (
-    <div className="w-full" ref={containerRef}>
+    <div className="sel-wrapper" ref={containerRef}>
       {label && (
-        <label
-          htmlFor={fieldId}
-          className="block text-sm font-medium text-slate-700 mb-1.5"
-        >
+        <label htmlFor={fieldId} className="sel-label">
           {label}
-          {required && <span className="text-red-500 ml-0.5">*</span>}
+          {required && <span className="sel-required">*</span>}
         </label>
       )}
- 
+
       {/* Hidden input keeps native <form> submission / FormData working */}
       {name && <input type="hidden" name={name} value={currentValue ?? ""} ref={ref} />}
- 
-      <div className="relative">
+
+      <div className="sel-container">
         <button
           type="button"
           id={fieldId}
@@ -156,39 +154,28 @@ const Select = forwardRef(function Select(
           aria-expanded={open}
           aria-invalid={!!error}
           aria-describedby={error ? errorId : undefined}
-          className={`w-full flex items-center justify-between gap-2 rounded-lg border px-3.5 py-2.5 text-sm text-left transition-colors
-            ${disabled ? "bg-slate-50 text-slate-400 cursor-not-allowed border-slate-200" : "bg-white cursor-pointer"}
-            ${!disabled && error ? "border-red-400 focus:outline-none focus:ring-2 focus:ring-red-200" : ""}
-            ${!disabled && !error ? "border-slate-300 hover:border-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-400" : ""}
-          `}
+          className={`sel-trigger ${disabled ? "sel-trigger--disabled" : ""} ${
+            error && !disabled ? "sel-trigger--error" : ""
+          }`}
         >
-          <span className={selectedOption ? "text-slate-800" : "text-slate-400"}>
+          <span className={`sel-value ${!selectedOption ? "sel-value--placeholder" : ""}`}>
             {selectedOption ? selectedOption.label : placeholder}
           </span>
-          <span className="flex items-center gap-1 shrink-0">
+          <span className="sel-actions">
             {clearable && selectedOption && !disabled && (
-              <span
-                onClick={handleClear}
-                role="button"
-                aria-label="Clear selection"
-                className="w-4 h-4 flex items-center justify-center rounded hover:bg-slate-100 text-slate-400 hover:text-slate-600 leading-none text-sm"
-              >
+              <span onClick={handleClear} role="button" aria-label="Clear selection" className="sel-clear">
                 ×
               </span>
             )}
-            <span
-              className={`text-slate-400 text-[10px] leading-none transition-transform inline-block ${open ? "rotate-180" : ""}`}
-            >
-              ▼
-            </span>
+            <span className={`sel-caret ${open ? "sel-caret--open" : ""}`}>▼</span>
           </span>
         </button>
- 
+
         {open && !disabled && (
-          <div className="absolute z-20 mt-1.5 w-full rounded-lg border border-slate-200 bg-white shadow-lg overflow-hidden">
+          <div className="sel-dropdown">
             {searchable && (
-              <div className="flex items-center gap-2 px-3 py-2 border-b border-slate-100">
-                <span className="text-slate-400 shrink-0 text-sm leading-none">⌕</span>
+              <div className="sel-search">
+                <span className="sel-search-icon">⌕</span>
                 <input
                   ref={searchInputRef}
                   value={query}
@@ -198,16 +185,14 @@ const Select = forwardRef(function Select(
                   }}
                   onKeyDown={handleKeyDown}
                   placeholder="Search..."
-                  className="w-full text-sm outline-none placeholder:text-slate-400"
+                  className="sel-search-input"
                 />
               </div>
             )}
- 
-            <ul role="listbox" className="max-h-56 overflow-y-auto py-1">
+
+            <ul role="listbox" className="sel-list">
               {filtered.length === 0 ? (
-                <li className="px-3.5 py-2.5 text-sm text-slate-400 text-center">
-                  No results found
-                </li>
+                <li className="sel-no-results">No results found</li>
               ) : (
                 filtered.map((opt, index) => {
                   const isSelected = opt.value === currentValue;
@@ -219,15 +204,12 @@ const Select = forwardRef(function Select(
                       aria-selected={isSelected}
                       onMouseEnter={() => setActiveIndex(index)}
                       onClick={() => handleSelect(opt)}
-                      className={`flex items-center justify-between gap-2 px-3.5 py-2 text-sm cursor-pointer
-                        ${isActive ? "bg-blue-50" : ""}
-                        ${isSelected ? "text-blue-700 font-medium" : "text-slate-700"}
-                      `}
+                      className={`sel-option ${isActive ? "sel-option--active" : ""} ${
+                        isSelected ? "sel-option--selected" : ""
+                      }`}
                     >
                       <span>{opt.label}</span>
-                      {isSelected && (
-                        <span className="text-blue-600 shrink-0 text-xs leading-none">✓</span>
-                      )}
+                      {isSelected && <span className="sel-check">✓</span>}
                     </li>
                   );
                 })
@@ -236,15 +218,15 @@ const Select = forwardRef(function Select(
           </div>
         )}
       </div>
- 
+
       {error && (
-        <p id={errorId} className="mt-1.5 flex items-center gap-1 text-xs text-red-600">
-          <span className="leading-none">⚠</span>
+        <p id={errorId} className="sel-error">
+          <span>⚠</span>
           {error}
         </p>
       )}
     </div>
   );
 });
- 
+
 export default Select;

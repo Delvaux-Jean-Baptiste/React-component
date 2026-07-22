@@ -1,12 +1,13 @@
 import { useState, useMemo } from "react";
- 
+import "./DataTable.css";
+
 // Simple text-based sort indicators, no external icon library needed
 const SortIcon = ({ direction }) => (
-  <span className="inline-block w-3.5 text-center leading-none">
+  <span className={`dt-sort-icon ${direction ? "dt-sort-icon--active" : ""}`}>
     {direction === "asc" ? "▲" : direction === "desc" ? "▼" : "⇅"}
   </span>
 );
- 
+
 /**
  * DataTable
  *
@@ -24,7 +25,7 @@ export default function DataTable({
 }) {
   const [sortCol, setSortCol] = useState(null);
   const [sortDir, setSortDir] = useState("asc"); // "asc" | "desc"
- 
+
   const sortedData = useMemo(() => {
     if (sortCol === null) return data;
     const rows = [...data];
@@ -42,7 +43,7 @@ export default function DataTable({
     });
     return rows;
   }, [data, sortCol, sortDir]);
- 
+
   const handleSort = (colIndex) => {
     if (!sortable) return;
     if (sortCol === colIndex) {
@@ -52,37 +53,27 @@ export default function DataTable({
       setSortDir("asc");
     }
   };
- 
+
   if (!headers.length) {
-    return (
-      <div className="text-sm text-slate-500 border border-dashed border-slate-300 rounded-lg p-6 text-center">
-        No headers provided.
-      </div>
-    );
+    return <div className="dt-empty-state">No headers provided.</div>;
   }
- 
+
   return (
-    <div className="w-full overflow-x-auto rounded-xl border border-slate-200 shadow-sm">
-      <table className="min-w-full border-collapse text-sm">
+    <div className="dt-wrapper">
+      <table className="dt-table">
         <thead>
-          <tr className="bg-slate-50 border-b border-slate-200">
+          <tr className="dt-thead-row">
             {headers.map((header, colIndex) => {
               const isActive = sortCol === colIndex;
               return (
                 <th
                   key={colIndex}
                   onClick={() => handleSort(colIndex)}
-                  className={`text-left font-semibold text-slate-700 px-4 py-3 whitespace-nowrap select-none ${
-                    sortable ? "cursor-pointer hover:bg-slate-100" : ""
-                  }`}
+                  className={`dt-th ${sortable ? "dt-th--sortable" : ""}`}
                 >
-                  <div className="flex items-center gap-1.5">
+                  <div className="dt-th-content">
                     <span>{header}</span>
-                    {sortable && (
-                      <span className={`text-[10px] ${isActive ? "text-slate-700" : "text-slate-400"}`}>
-                        <SortIcon direction={isActive ? sortDir : null} />
-                      </span>
-                    )}
+                    {sortable && <SortIcon direction={isActive ? sortDir : null} />}
                   </div>
                 </th>
               );
@@ -92,10 +83,7 @@ export default function DataTable({
         <tbody>
           {sortedData.length === 0 ? (
             <tr>
-              <td
-                colSpan={headers.length}
-                className="text-center text-slate-400 px-4 py-8"
-              >
+              <td colSpan={headers.length} className="dt-empty-cell">
                 No data to display.
               </td>
             </tr>
@@ -103,15 +91,10 @@ export default function DataTable({
             sortedData.map((row, rowIndex) => (
               <tr
                 key={rowIndex}
-                className={`border-b border-slate-100 last:border-0 ${
-                  striped && rowIndex % 2 === 1 ? "bg-slate-50/60" : "bg-white"
-                } hover:bg-blue-50/50 transition-colors`}
+                className={`dt-row ${striped && rowIndex % 2 === 1 ? "dt-row--striped" : ""}`}
               >
                 {headers.map((_, colIndex) => (
-                  <td
-                    key={colIndex}
-                    className="px-4 py-2.5 text-slate-700 whitespace-nowrap"
-                  >
+                  <td key={colIndex} className="dt-cell">
                     {row[colIndex]}
                   </td>
                 ))}
