@@ -10,6 +10,8 @@ export function CustomInput({
   isRequired = false,
   isDisabled = false,
   placeholder,
+  className = '',
+  inputClassName = '',
   id: externalId,
   ...rest
 }) {
@@ -22,7 +24,7 @@ export function CustomInput({
 
   return (
     <div
-      className={`custom-input ${isDisabled ? 'disabled' : ''} ${hasError ? 'has-error' : ''}`}
+      className={`custom-input ${className} ${isDisabled ? 'disabled' : ''} ${hasError ? 'has-error' : ''}`}
     >
       {label && (
         <label htmlFor={inputId} className='input-label'>
@@ -44,7 +46,7 @@ export function CustomInput({
         aria-required={isRequired}
         aria-invalid={hasError}
         aria-describedby={describedBy}
-        className={`input ${hasError ? 'input-error' : ''}`}
+        className={`input ${inputClassName} ${hasError ? 'input-error' : ''}`}
         {...rest}
       />
 
