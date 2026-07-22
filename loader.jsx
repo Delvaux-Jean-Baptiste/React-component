@@ -1,14 +1,19 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import "./loader.scss";
 
 export default function Loader({
-  headers = [],
-  data = [],
-  sortable = true,
-  striped = true,
+  message = "loading...",
 }){
-    return(
-        <div class="container">
+  const [isBusy, setIsBusy] = useState(true);
+  useEffect(() => {
+    setIsBusy(true)
+    fetchData().then(() => {
+      setIsBusy(false)
+    })
+  }, [])
+  return(<>
+    <div className={`spinner-wrapper`}>
+      <div class="container">
         <div class="baton-0"><div class="metronome"><div class="baton"></div></div></div>
         <div class="baton-1"><div class="metronome"><div class="baton"></div></div></div>
         <div class="baton-2"><div class="metronome"><div class="baton"></div></div></div>
@@ -45,8 +50,11 @@ export default function Loader({
         <div class="baton-33"><div class="metronome"><div class="baton"></div></div></div>
         <div class="baton-34"><div class="metronome"><div class="baton"></div></div></div>
         <div class="baton-35"><div class="metronome"><div class="baton"></div></div></div>
-</div>
-    )
+        <span className="spinner-message">{message}</span>
+      </div>
+    </div>
+  </>
+  )
 }
 
 
