@@ -1,6 +1,6 @@
-import "./Button.css";
+import "./specialButton.css"
 
-export default function Button({
+export default function SpecialButton({
                                    children,
                                    variant = "primary",
                                    size = "medium",
