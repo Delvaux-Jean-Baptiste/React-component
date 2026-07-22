@@ -1,0 +1,54 @@
+.custom-input {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.input-label {
+  font-weight: 600;
+  color: black;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.required-star {
+  color: red;
+  font-weight: bold;
+}
+
+.input {
+  padding: 10px 14px;
+  border-radius: 6px;
+  border: 1px solid;
+  color: black;
+}
+
+.input-error-text {
+  font-size: 90%;
+  color: red;
+  font-weight: 500;
+  margin-left: 2px;
+}
+
+.input.input-error {
+  border-color: red;
+}
+
+.input-help-text {
+  font-size: 90%;
+  color: darkslategrey;
+  margin-left: 2px;
+}
+
+.custom-input.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.custom-input.disabled .input {
+  background-color: #f3f4f6;
+  border-color: #e5e7eb;
+  cursor: not-allowed;
+}
