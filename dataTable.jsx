@@ -67,7 +67,7 @@ export default function DataTable({
       
   }
   
-  export default function DataTableCheater({
+export function DataTableCheater({
     headers = [],
     data = [],
     sortable = true,
