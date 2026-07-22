@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import { ChevronUp, ChevronDown, ChevronsUpDown } from "lucide-react";
 
 export default function DataTable({
     headers = [],
