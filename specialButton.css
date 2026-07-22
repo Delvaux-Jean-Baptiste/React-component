@@ -1,0 +1,160 @@
+.special-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.65rem;
+
+    min-height: 44px;
+    padding: 0.8rem 1.5rem;
+
+    border: none;
+    border-radius: 12px;
+
+    font: inherit;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+
+    transition:
+            transform 180ms ease,
+            box-shadow 180ms ease,
+            opacity 180ms ease,
+            background 180ms ease;
+}
+
+.special-button::before {
+    content: "";
+
+    position: absolute;
+    top: 0;
+    left: -80%;
+
+    width: 50%;
+    height: 100%;
+
+    background: linear-gradient(
+            120deg,
+            transparent,
+            rgba(255, 255, 255, 0.35),
+            transparent
+    );
+
+    transition: left 500ms ease;
+}
+
+.special-button:hover:not(:disabled)::before {
+    left: 140%;
+}
+
+.special-button:hover:not(:disabled) {
+    transform: translateY(-2px);
+}
+
+.special-button:active:not(:disabled) {
+    transform: translateY(0) scale(0.97);
+}
+
+.special-button:focus-visible {
+    outline: 3px solid rgba(99, 102, 241, 0.35);
+    outline-offset: 3px;
+}
+
+/* Primary */
+
+.special-button--primary {
+    color: white;
+
+    background: linear-gradient(
+            135deg,
+            #6366f1,
+            #8b5cf6
+    );
+
+    box-shadow: 0 10px 24px rgba(99, 102, 241, 0.35);
+}
+
+.special-button--primary:hover:not(:disabled) {
+    box-shadow: 0 14px 30px rgba(99, 102, 241, 0.5);
+}
+
+/* Secondary */
+
+.special-button--secondary {
+    color: #1f2937;
+    background: #e5e7eb;
+
+    box-shadow: 0 8px 18px rgba(31, 41, 55, 0.15);
+}
+
+.special-button--secondary:hover:not(:disabled) {
+    background: #d1d5db;
+}
+
+/* Danger */
+
+.special-button--danger {
+    color: white;
+
+    background: linear-gradient(
+            135deg,
+            #ef4444,
+            #dc2626
+    );
+
+    box-shadow: 0 10px 24px rgba(239, 68, 68, 0.35);
+}
+
+.special-button--danger:hover:not(:disabled) {
+    box-shadow: 0 14px 30px rgba(239, 68, 68, 0.5);
+}
+
+/* Disabled */
+
+.special-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Icon */
+
+.special-button__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 1.1rem;
+}
+
+/* Loader */
+
+.special-button__loader {
+    width: 18px;
+    height: 18px;
+
+    border: 3px solid rgba(255, 255, 255, 0.35);
+    border-top-color: currentColor;
+    border-radius: 50%;
+
+    animation: special-button-spin 700ms linear infinite;
+}
+
+.special-button--secondary .special-button__loader {
+    border-color: rgba(31, 41, 55, 0.25);
+    border-top-color: #1f2937;
+}
+
+.special-button__label {
+    position: relative;
+    z-index: 1;
+}
+
+@keyframes special-button-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
