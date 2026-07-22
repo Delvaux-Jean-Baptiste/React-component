@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect, useId, forwardRef } from "react";
-import { ChevronDown, Search, X, Check, AlertCircle } from "lucide-react";
-
+ 
 /**
  * Select
  *
@@ -40,29 +39,29 @@ const Select = forwardRef(function Select(
   const normalized = options.map((opt) =>
     typeof opt === "string" ? { label: opt, value: opt } : opt
   );
-
+ 
   const isControlled = value !== undefined;
   const [internalValue, setInternalValue] = useState(defaultValue);
   const currentValue = isControlled ? value : internalValue;
-
+ 
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [activeIndex, setActiveIndex] = useState(-1);
-
+ 
   const containerRef = useRef(null);
   const searchInputRef = useRef(null);
   const generatedId = useId();
   const fieldId = id || generatedId;
   const errorId = `${fieldId}-error`;
-
+ 
   const filtered = searchable
     ? normalized.filter((opt) =>
         opt.label.toLowerCase().includes(query.trim().toLowerCase())
       )
     : normalized;
-
+ 
   const selectedOption = normalized.find((opt) => opt.value === currentValue) || null;
-
+ 
   useEffect(() => {
     function handleClickOutside(e) {
       if (containerRef.current && !containerRef.current.contains(e.target)) {
@@ -73,7 +72,7 @@ const Select = forwardRef(function Select(
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
-
+ 
   useEffect(() => {
     if (open && searchable) {
       // focus after the dropdown mounts
@@ -81,29 +80,29 @@ const Select = forwardRef(function Select(
       setActiveIndex(-1);
     }
   }, [open, searchable]);
-
+ 
   const commitValue = (newValue) => {
     if (!isControlled) setInternalValue(newValue);
     onChange?.(newValue);
   };
-
+ 
   const handleSelect = (opt) => {
     commitValue(opt.value);
     setOpen(false);
     setQuery("");
   };
-
+ 
   const handleClear = (e) => {
     e.stopPropagation();
     commitValue(null);
     setQuery("");
   };
-
+ 
   const toggleOpen = () => {
     if (disabled) return;
     setOpen((o) => !o);
   };
-
+ 
   const handleKeyDown = (e) => {
     if (disabled) return;
     if (!open && (e.key === "Enter" || e.key === " " || e.key === "ArrowDown")) {
@@ -112,7 +111,7 @@ const Select = forwardRef(function Select(
       return;
     }
     if (!open) return;
-
+ 
     if (e.key === "ArrowDown") {
       e.preventDefault();
       setActiveIndex((i) => Math.min(i + 1, filtered.length - 1));
@@ -130,7 +129,7 @@ const Select = forwardRef(function Select(
       setQuery("");
     }
   };
-
+ 
   return (
     <div className="w-full" ref={containerRef}>
       {label && (
@@ -142,10 +141,10 @@ const Select = forwardRef(function Select(
           {required && <span className="text-red-500 ml-0.5">*</span>}
         </label>
       )}
-
+ 
       {/* Hidden input keeps native <form> submission / FormData working */}
       {name && <input type="hidden" name={name} value={currentValue ?? ""} ref={ref} />}
-
+ 
       <div className="relative">
         <button
           type="button"
@@ -172,23 +171,24 @@ const Select = forwardRef(function Select(
                 onClick={handleClear}
                 role="button"
                 aria-label="Clear selection"
-                className="p-0.5 rounded hover:bg-slate-100 text-slate-400 hover:text-slate-600"
+                className="w-4 h-4 flex items-center justify-center rounded hover:bg-slate-100 text-slate-400 hover:text-slate-600 leading-none text-sm"
               >
-                <X size={14} />
+                ×
               </span>
             )}
-            <ChevronDown
-              size={16}
-              className={`text-slate-400 transition-transform ${open ? "rotate-180" : ""}`}
-            />
+            <span
+              className={`text-slate-400 text-[10px] leading-none transition-transform inline-block ${open ? "rotate-180" : ""}`}
+            >
+              ▼
+            </span>
           </span>
         </button>
-
+ 
         {open && !disabled && (
           <div className="absolute z-20 mt-1.5 w-full rounded-lg border border-slate-200 bg-white shadow-lg overflow-hidden">
             {searchable && (
               <div className="flex items-center gap-2 px-3 py-2 border-b border-slate-100">
-                <Search size={14} className="text-slate-400 shrink-0" />
+                <span className="text-slate-400 shrink-0 text-sm leading-none">⌕</span>
                 <input
                   ref={searchInputRef}
                   value={query}
@@ -202,7 +202,7 @@ const Select = forwardRef(function Select(
                 />
               </div>
             )}
-
+ 
             <ul role="listbox" className="max-h-56 overflow-y-auto py-1">
               {filtered.length === 0 ? (
                 <li className="px-3.5 py-2.5 text-sm text-slate-400 text-center">
@@ -225,7 +225,9 @@ const Select = forwardRef(function Select(
                       `}
                     >
                       <span>{opt.label}</span>
-                      {isSelected && <Check size={14} className="text-blue-600 shrink-0" />}
+                      {isSelected && (
+                        <span className="text-blue-600 shrink-0 text-xs leading-none">✓</span>
+                      )}
                     </li>
                   );
                 })
@@ -234,15 +236,15 @@ const Select = forwardRef(function Select(
           </div>
         )}
       </div>
-
+ 
       {error && (
         <p id={errorId} className="mt-1.5 flex items-center gap-1 text-xs text-red-600">
-          <AlertCircle size={13} />
+          <span className="leading-none">⚠</span>
           {error}
         </p>
       )}
     </div>
   );
 });
-
+ 
 export default Select;
