@@ -1,0 +1,96 @@
+.badge-anchor-wrapper {
+  position: relative;
+  display: inline-flex;
+  width: max-content;
+  max-width: 100%;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+
+  border-radius: 9999px;
+
+  font-weight: bold;
+  line-height: 1;
+  white-space: nowrap;
+  box-sizing: border-box;
+  z-index: 10;
+}
+
+.badge-pos-top-right {
+  position: absolute;
+  top: 0;
+  right: 0;
+  transform: translate(50%, -50%);
+}
+
+.badge-pos-top-left {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translate(-50%, -50%);
+}
+
+.badge-pos-bottom-right {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  transform: translate(50%, 50%);
+}
+
+.badge-pos-bottom-left {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  transform: translate(-50%, 50%);
+}
+
+.badge-primary {
+  background-color: blue;
+  color: white;
+}
+.badge-success {
+  background-color: green;
+  color: white;
+}
+.badge-warning {
+  background-color: orange;
+  color: black;
+}
+.badge-danger {
+  background-color: red;
+  color: white;
+}
+.badge-gray {
+  background-color: gray;
+  color: white;
+}
+
+.badge-small {
+  padding: 0 4px;
+  font-size: 10px;
+  height: 16px;
+  min-width: 16px;
+}
+
+.badge-medium {
+  padding: 0 6px;
+  font-size: 12px;
+  height: 20px;
+  min-width: 20px;
+}
+
+.badge-large {
+  padding: 0 8px;
+  font-size: 14px;
+  height: 24px;
+  min-width: 24px;
+}
+
+.badge-inactive {
+  opacity: 0.5;
+  background-color: gray !important;
+}
