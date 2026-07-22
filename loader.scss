@@ -1,0 +1,99 @@
+body {
+  background-color: #001524;
+}
+
+.spinner-wrapper {
+  container-type: inline-size;
+  display: inline-block;
+  width: 100%;
+  aspect-ratio: 1;       // keeps it square so cqw alone can drive sizing
+}
+
+.container {
+  display: block;
+  position: relative;   // ← add this
+  font-size: 5.34cqw;    // ← tuned so baton radius (9.375em) = half the box width
+  height: 100%;          // fill the wrapper, don't derive from its own font-size
+  width: 100%;
+  margin: 0 auto;
+}
+
+.baton {
+  display: block;
+  height: 0.125em;       // was 2px
+  width: 4.375em;        // was 70px
+  background-color: #459fa5;
+  animation: scale 1.25s infinite linear;
+  transform-origin: 0;
+  transform: rotate(-10deg);
+
+  &:before {
+    content: '';
+    display: block;
+    height: 0.3125em;    // was 5px
+    width: 0.3125em;     // was 5px
+    background-color: #f5a51c;
+    position: absolute;
+    top: -0.125em;        // was -2px
+    border-radius: 0.3125em; // was 5px
+  }
+
+  &:after {
+    content: '';
+    display: block;
+    height: 0.3125em;    // was 5px
+    width: 0.3125em;     // was 5px
+    background-color: #f5a51c;
+    position: absolute;
+    top: -0.125em;        // was -2px
+    right: 0;
+    border-radius: 0.3125em; // was 5px
+  }
+}
+
+.metronome {
+  transform-origin: 0;
+  animation: metronome 1.25s infinite linear;
+}
+
+.spinner-message {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;              // sits above the batons
+  color: #f5a51c;          // pick whatever fits your palette
+  font-size: 1em;       // relative to .container's font-size, tune to taste
+  white-space: nowrap;
+  text-align: center;
+  pointer-events: none;    // optional: lets clicks pass through to whatever's behind
+}
+
+@for $i from 0 through 35 {
+  .baton-#{$i} {
+    height: 0.0625em;    // was 1px
+    width: 9.375em;      // was 150px
+    position: absolute;
+    top: calc(50% - 0.5em); // was 50% - 8px
+    transform-origin: 100%;
+    transform: rotate($i * 10deg);
+
+    .baton, .baton:after, .metronome {
+      animation-delay: -$i * 0.14s;
+    }
+  }
+}
+
+@keyframes metronome {
+  0%   { transform: rotate(-25deg); }
+  50%  { transform: rotate(25deg); }
+  100% { transform: rotate(-25deg); }
+}
+
+@keyframes scale {
+  0%   { transform: scaleX(1); }
+  25%  { transform: scaleX(0.74); }
+  50%  { transform: scaleX(1); }
+  75%  { transform: scaleX(1.16); }
+  100% { transform: scaleX(1); }
+}
