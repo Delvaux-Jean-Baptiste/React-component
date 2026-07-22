@@ -1,37 +1,48 @@
-import "./specialButton.css"
+import "./SpecialButton.css";
 
 export default function SpecialButton({
-                                   children,
-                                   variant = "primary",
-                                   size = "medium",
-                                   loading = false,
-                                   fullWidth = false,
-                                   className = "",
-                                   disabled = false,
-                                   ...props
-                               }) {
-    const classes = [
-        "btn",
-        `btn-${variant}`,
-        `btn-${size}`,
-        fullWidth ? "btn-full" : "",
-        loading ? "btn-loading" : "",
-        className
-    ]
-        .filter(Boolean)
-        .join(" ");
+                                          label, //The label of the button
+                                          variant = "primary", //Type of the button : compatible with primary,secondary and danger
+                                          disabled = false,
+                                          loading = false,
+                                          icon = null,
+                                          onClick, //Use this to bind an event to the button wich will be triggered onClick
+                                      }) {
+    const handleClick = (event) => {
+        if (disabled || loading) {
+            return;
+        }
+
+        onClick?.(event);
+    };
 
     return (
         <button
-            className={classes}
+            type="button"
+            className={`special-button special-button--${variant}`}
             disabled={disabled || loading}
+            aria-disabled={disabled || loading}
             aria-busy={loading}
-            {...props}
+            onClick={handleClick}
         >
-            {loading && <span className="loader" aria-hidden="true" />}
+            {loading ? (
+                <span
+                    className="special-button__loader"
+                    aria-hidden="true"
+                />
+            ) : (
+                icon && (
+                    <span
+                        className="special-button__icon"
+                        aria-hidden="true"
+                    >
+                        {icon}
+                    </span>
+                )
+            )}
 
-            <span className={loading ? "btn-text-hidden" : ""}>
-                {children}
+            <span className="special-button__label">
+                {loading ? "Loading..." : label}
             </span>
         </button>
     );
