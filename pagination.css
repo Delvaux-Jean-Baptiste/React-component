@@ -1,0 +1,45 @@
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.pagination-info {
+    font-weight: 600;
+}
+
+.pagination-buttons {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+}
+
+.pagination-select {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+}
+
+.pagination-select select {
+    padding: .6rem .8rem;
+
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+
+    font: inherit;
+
+    cursor: pointer;
+
+    transition: border-color .2s;
+}
+
+.pagination-select select:hover {
+    border-color: #6366f1;
+}
+
+.pagination-select select:focus {
+    outline: none;
+    border-color: #6366f1;
+}
