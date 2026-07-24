@@ -1,6 +1,6 @@
-import { useCallback, useEffect, useState } from "react";
+import {useCallback, useEffect, useState} from "react";
 import Notification from "./Notification";
-import { notificationService } from "./notificationService";
+import {notificationService} from "./NotificationService";
 import "./Notification.css";
 
 export default function NotificationContainer() {
@@ -15,7 +15,7 @@ export default function NotificationContainer() {
     }, []);
 
     useEffect(() => {
-        const unsubscribe = notificationService.subscribe((event) => {
+        return notificationService.subscribe((event) => {
             switch (event.action) {
                 case "add":
                     setNotifications((currentNotifications) => [
@@ -43,8 +43,6 @@ export default function NotificationContainer() {
                     );
             }
         });
-
-        return unsubscribe;
     }, []);
 
     return (
