@@ -1,4 +1,4 @@
-import "./SpecialButton.css";
+import "./specialButton.css";
 
 export default function SpecialButton({
                                           label, //The label of the button
